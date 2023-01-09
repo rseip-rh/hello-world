@@ -1,19 +1,21 @@
 # Spring Boot Hello-World application
 This app is for demoing OpenShift Pipelines
 
-#Prerequisites
+# Prerequisites
 
-##Add Pipelines Operator
+## Add Pipelines Operator
 
-##Add GitOps Operator
+## Add GitOps Operator
 
-##Turn on User Monitoring
+## Turn on User Monitoring
 
 Apply the yaml in the monitoring folder
 
-#Setup using ArgoCD
+Refer to [Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.11/monitoring/enabling-monitoring-for-user-defined-projects.html) for details.
 
-##Setup the namespace and give permissions to ArgoCD Service Account
+# Setup using ArgoCD
+
+## Setup the namespace and give permissions to ArgoCD Service Account
 
 ```
 oc create ns hello-world
