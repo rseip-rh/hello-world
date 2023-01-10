@@ -9,7 +9,7 @@ This app is for demoing OpenShift Pipelines
 
 ## Turn on User Monitoring
 
-Apply the yaml in the monitoring folder
+Apply the [yaml](Monitoring/cluster-monitoring-config.yaml) in the monitoring folder
 
 Refer to [Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.11/monitoring/enabling-monitoring-for-user-defined-projects.html) for details.
 
