@@ -31,57 +31,65 @@ oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitop
 
 Add the yamls in the argo folder
 
-GUI login
-networking
-openshift-gitops ns
-route, click and open in new window
-confirm authorization
-pvc's are spinning until pipeline is run
+- GUI login
+- networking
+- openshift-gitops ns
+- route, click and open in new window
+- confirm authorization
+- pvc's are spinning until pipeline is run
 
 # Demo Setup
 
-##Setup Tekton Task github-set-status
+## Setup Tekton Task github-set-status
 
 Make sure to run from inside namespace hello-world
 
-kubectl create secret generic github --from-literal token="MY_TOKEN" 
+`oc project hello-world`
 
-##Add secret for access to quay
+Get token from GitHub. Settings -> Developer Settings -> Personal access tokens -> Tokens (classic) -> Generate new token -> Generate new token (classic). Grant "repo" permissions. Take note of lifetime expiration.
 
-oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
+`oc create secret generic github --from-literal token="MY_TOKEN" `
 
-oc secrets link pipeline quay-registry --for=pull,mount
+`oc get secret github`
 
-##Add Triggers and Tasks
+`oc describe secret github`
 
-##Point Webhook at triggers
+## Add secret for access to quay
 
-oc get routes
+`oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>`
 
-##Allow pipeline service account to read the cluster api
+`oc secrets link pipeline quay-registry --for=pull,mount`
 
-oc adm policy add-cluster-role-to-user cluster-reader -z pipeline
+## Add Triggers and Tasks
 
-##Setup for Prometheus Monitoring
+## Point Webhook at triggers
+
+`oc get routes`
+
+## Allow pipeline service account to read the cluster api
+
+`oc adm policy add-cluster-role-to-user cluster-reader -z pipeline`
+
+## Setup for Prometheus Monitoring
 
 Apply the manifest in Monitoring
 
-oc adm policy add-cluster-role-to-user monitoring-edit -z pipeline
+`oc adm policy add-cluster-role-to-user monitoring-edit -z pipeline`
 
-##Setup User defined Grafana
+## Setup User defined Grafana
 
 https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4
 
-Add Grafana Operator to namespace my-grafana
+### Add Grafana Operator to namespace my-grafana
 
-Create a Grafana instance with the name my-grafana
+### Create a Grafana instance with the name my-grafana
 
-oc apply -f Grafana/grafana.yaml
+`oc apply -f Grafana/grafana.yaml`
 
-oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-serviceaccount
+`oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-serviceaccount`
 
-oc serviceaccounts get-token grafana-serviceaccount -n my-grafana
+`oc serviceaccounts get-token grafana-serviceaccount -n my-grafana`
 
-Replace BEARER_TOKEN in grafana-ds.yaml
+### Replace BEARER_TOKEN in grafana-ds.yaml
 
-oc apply -f Grafana/grafana-ds.yaml
+`oc apply -f Grafana/grafana-ds.yaml`
