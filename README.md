@@ -27,11 +27,18 @@ oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitop
 ```
 
 
-##Add ArgoCD Applications
+## Add ArgoCD Applications
 
 Add the yamls in the argo folder
 
-#Demo Setup
+GUI login
+networking
+openshift-gitops ns
+route, click and open in new window
+confirm authorization
+pvc's are spinning until pipeline is run
+
+# Demo Setup
 
 
 
