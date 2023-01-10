@@ -40,27 +40,11 @@ pvc's are spinning until pipeline is run
 
 # Demo Setup
 
-
-
-##Clone hello-world locally
-
-##Create hello-world Project
-
-oc create ns hello-world
-
-oc project hello-world
-
-##Add Persistent Volumes
-
-##Add pipeline manifests
-
 ##Setup Tekton Task github-set-status
 
 Make sure to run from inside namespace hello-world
 
 kubectl create secret generic github --from-literal token="MY_TOKEN" 
-
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/github-set-status/0.2/github-set-status.yaml
 
 ##Add secret for access to quay
 
