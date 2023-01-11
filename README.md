@@ -1,19 +1,21 @@
 # Spring Boot Hello-World application
 This app is for demoing OpenShift Pipelines
 
-#Prerequisites
+# Prerequisites
 
-##Add Pipelines Operator
+## Add Pipelines Operator
 
-##Add GitOps Operator
+## Add GitOps Operator
 
-##Turn on User Monitoring
+## Turn on User Monitoring
 
-Apply the yaml in the monitoring folder
+Apply the [yaml](Monitoring/cluster-monitoring-config.yaml) in the monitoring folder
 
-#Setup using ArgoCD
+Refer to [Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.11/monitoring/enabling-monitoring-for-user-defined-projects.html) for details.
 
-##Setup the namespace and give permissions to ArgoCD Service Account
+# Setup using ArgoCD
+
+## Setup the namespace and give permissions to ArgoCD Service Account
 
 ```
 oc create ns hello-world
@@ -25,70 +27,69 @@ oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitop
 ```
 
 
-##Add ArgoCD Applications
+## Add ArgoCD Applications
 
 Add the yamls in the argo folder
 
-#Demo Setup
+- GUI login
+- networking
+- openshift-gitops ns
+- route, click and open in new window
+- confirm authorization
+- pvc's are spinning until pipeline is run
 
+# Demo Setup
 
-
-##Clone hello-world locally
-
-##Create hello-world Project
-
-oc create ns hello-world
-
-oc project hello-world
-
-##Add Persistent Volumes
-
-##Add pipeline manifests
-
-##Setup Tekton Task github-set-status
+## Setup Tekton Task github-set-status
 
 Make sure to run from inside namespace hello-world
 
-kubectl create secret generic github --from-literal token="MY_TOKEN" 
+`oc project hello-world`
 
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/github-set-status/0.2/github-set-status.yaml
+Get token from GitHub. Settings -> Developer Settings -> Personal access tokens -> Tokens (classic) -> Generate new token -> Generate new token (classic). Grant "repo" permissions. Take note of lifetime expiration.
 
-##Add secret for access to quay
+`oc create secret generic github --from-literal token="MY_TOKEN" `
 
-oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
+`oc get secret github`
 
-oc secrets link pipeline quay-registry --for=pull,mount
+`oc describe secret github`
 
-##Add Triggers and Tasks
+## Add secret for access to quay
 
-##Point Webhook at triggers
+`oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>`
 
-oc get routes
+`oc secrets link pipeline quay-registry --for=pull,mount`
 
-##Allow pipeline service account to read the cluster api
+## Add Triggers and Tasks
 
-oc adm policy add-cluster-role-to-user cluster-reader -z pipeline
+## Point Webhook at triggers
 
-##Setup for Prometheus Monitoring
+`oc get routes`
+
+## Allow pipeline service account to read the cluster api
+
+`oc adm policy add-cluster-role-to-user cluster-reader -z pipeline`
+
+## Setup for Prometheus Monitoring
 
 Apply the manifest in Monitoring
 
-oc adm policy add-cluster-role-to-user monitoring-edit -z pipeline
+`oc adm policy add-cluster-role-to-user monitoring-edit -z pipeline`
 
-##Setup User defined Grafana
+## Setup User defined Grafana
 
 https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4
 
-Add Grafana Operator to namespace my-grafana
+### Add Grafana Operator to namespace my-grafana
 
-Create a Grafana instance with the name my-grafana
+### Create a Grafana instance with the name my-grafana
 
-oc apply -f Grafana/grafana.yaml
+`oc apply -f Grafana/grafana.yaml`
 
-oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-serviceaccount
+`oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-serviceaccount`
 
-oc serviceaccounts get-token grafana-serviceaccount -n my-grafana
+`oc serviceaccounts get-token grafana-serviceaccount -n my-grafana`
 
-Replace BEARER_TOKEN in grafana-ds.yaml
+### Replace BEARER_TOKEN in grafana-ds.yaml
 
-oc apply -f Grafana/grafana-ds.yaml
+`oc apply -f Grafana/grafana-ds.yaml`

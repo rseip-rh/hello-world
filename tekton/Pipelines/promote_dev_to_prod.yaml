@@ -9,10 +9,10 @@ metadata:
   namespace: hello-world
 spec:
   params:
-    - default: 'quay.io/cmays20/hello-world'
+    - default: 'quay.io/rseip/hello-world'
       name: IMAGE_NAME
       type: string
-    - default: 'https://github.com/cmays20/hello-world-deploy'
+    - default: 'https://github.com/rseip-rh/hello-world-deploy'
       name: MANIFEST_GIT_REPO
       type: string
     - name: PREVIOUS_WORKING_DIR
@@ -65,9 +65,9 @@ spec:
     - name: git-commit
       params:
         - name: GIT_USER_NAME
-          value: 'cmays20'
+          value: 'rseip-rh'
         - name: GIT_USER_EMAIL
-          value: 'cmays@outlook.com'
+          value: 'rseip@redhat.com'
         - name: GIT_SCRIPT
           value: |
             git add $(params.MANIFEST_WORKING_DIR)/kustomization.yaml

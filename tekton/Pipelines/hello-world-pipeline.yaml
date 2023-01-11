@@ -14,13 +14,13 @@ spec:
     - default: hello-world
       name: APP_NAME
       type: string
-    - default: 'https://github.com/cmays20/hello-world'
+    - default: 'https://github.com/rseip-rh/hello-world'
       name: GIT_REPO
       type: string
     - default: master
       name: GIT_REVISION
       type: string
-    - default: 'quay.io/cmays20/hello-world'
+    - default: 'quay.io/rseip/hello-world'
       name: IMAGE_NAME
       type: string
     - default: .
@@ -32,7 +32,7 @@ spec:
     - default: 'maven:3-openjdk-11-slim'
       name: MAVEN_IMAGE
       type: string
-    - default: 'https://github.com/cmays20/hello-world-deploy'
+    - default: 'https://github.com/rseip-rh/hello-world-deploy'
       name: MANIFEST_GIT_REPO
       type: string
     - name: MANIFEST_WORKING_DIR
@@ -119,9 +119,9 @@ spec:
     - name: git-commit
       params:
         - name: GIT_USER_NAME
-          value: 'cmays20'
+          value: 'rseip-rh'
         - name: GIT_USER_EMAIL
-          value: 'cmays@outlook.com'
+          value: 'rseip@redhat.com'
         - name: GIT_SCRIPT
           value: |
             git add $(params.MANIFEST_WORKING_DIR)/kustomization.yaml

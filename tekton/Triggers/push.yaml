@@ -53,7 +53,7 @@ spec:
             value: $(tt.params.git-revision)
           - name: IMAGE_NAME
             value: >-
-              quay.io/cmays20/$(tt.params.git-repo-name)
+              quay.io/rseip/$(tt.params.git-repo-name)
           - name: PATH_CONTEXT
             value: .
           - name: VERSION
