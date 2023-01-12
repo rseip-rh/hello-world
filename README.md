@@ -1,21 +1,34 @@
-# Spring Boot Hello-World application
+# Demonstrate OpenShift Pipelines with Spring Boot Hello-World
+
 This app is for demoing OpenShift Pipelines
 
-# Prerequisites
+## Prerequisites
 
-## Add Pipelines Operator
+This demonstration requires the following resources:
+- [OpenShift Container Platform 4.11.x](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it)
+- GitHub account with [hello-world](https://github.com/rseip-rh/hello-world) and [hello-world-deploy](https://github.com/rseip-rh/hello-world-deploy) projects
+- [quay.io](https://quay.io/user/rseip/) container registry account
 
-## Add GitOps Operator
+### Install OpenShift Pipelines Operator
 
-## Turn on User Monitoring
+Login as kubeadmin to console-openshift-console . Navigate to Operators -> OperatorHub. Filter by "Red Hat OpenShift Pipelines". Click the operator. Click "Install". Accept default values. Click "Install".
 
-Apply the [yaml](Monitoring/cluster-monitoring-config.yaml) in the monitoring folder
+### Install OpenShift GitOps Operator
+
+Login as kubeadmin to console-openshift-console . Navigate to Operators -> OperatorHub. Filter by "Red Hat OpenShift GitOps". Click the operator. Click "Install". Accept default values. Click "Install".
+
+### Enable monitoring for user-defined projects
+
+Apply the [YAML](Monitoring/cluster-monitoring-config.yaml) from the Monitoring folder.
+
+`oc project hello-world`
+`oc apply -f Monitoring/cluster-monitoring-config.yaml`
 
 Refer to [Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.11/monitoring/enabling-monitoring-for-user-defined-projects.html) for details.
 
-# Setup using ArgoCD
+## Setup and configure ArgoCD
 
-## Setup the namespace and give permissions to ArgoCD Service Account
+### Setup the namespace and give permissions to ArgoCD Service Account
 
 ```
 oc create ns hello-world
@@ -26,10 +39,14 @@ oc label namespace hello-world-dev argocd.argoproj.io/managed-by=openshift-gitop
 oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n hello-world-dev
 ```
 
+### Add applications to ArgoCD
 
-## Add ArgoCD Applications
+Apply the YAML from the [argo](argo/) folder.
 
-Add the yamls in the argo folder
+`oc project hello-world`
+`oc apply -f argo/*`
+
+### Validate ArgoCD user interface
 
 - GUI login
 - networking
@@ -38,9 +55,9 @@ Add the yamls in the argo folder
 - confirm authorization
 - pvc's are spinning until pipeline is run
 
-# Demo Setup
+## Set up demo pipelines
 
-## Setup Tekton Task github-set-status
+### Setup Tekton Task github-set-status
 
 Make sure to run from inside namespace hello-world
 
@@ -54,35 +71,46 @@ Get token from GitHub. Settings -> Developer Settings -> Personal access tokens 
 
 `oc describe secret github`
 
-## Add secret for access to quay
+### Add secret for access to quay
 
 `oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>`
 
 `oc secrets link pipeline quay-registry --for=pull,mount`
 
-## Add Triggers and Tasks
+### Point Webhook at triggers
 
-## Point Webhook at triggers
+```
+oc project hello-world
+oc get routes
+```
 
-`oc get routes`
+In GitHub navigate to Settings -> webhooks -> add webhook.
 
-## Allow pipeline service account to read the cluster api
+For `el-hello-world-app`, use the `HOST/PORT` value to create a push webhook. Ensure payload URL is prefixed with `http://` and a trailing slash `/`. Change the content type to `application/json`.
+
+For `el-hello-world-test-app`, use the `HOST/PORT` value to create a push webhook. Ensure payload URL is prefixed with `http://` and a trailing slash `/`. Change the content type to `application/json`. Enable ONLY pull request events.
+
+TODO - explore use of CLI to create these webhooks
+
+### Allow pipeline service account to read the cluster api
 
 `oc adm policy add-cluster-role-to-user cluster-reader -z pipeline`
 
-## Setup for Prometheus Monitoring
+--- CURRENT PROGRESS ---
+
+### Set up Prometheus Monitoring
 
 Apply the manifest in Monitoring
 
 `oc adm policy add-cluster-role-to-user monitoring-edit -z pipeline`
 
-## Setup User defined Grafana
+### Set up custom Grafana dashboards
 
-https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4
+Refer to blog post [Custom Grafana dashboards for Red Hat OpenShift Container Platform 4](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4).
 
-### Add Grafana Operator to namespace my-grafana
+#### Add Grafana Operator to namespace my-grafana
 
-### Create a Grafana instance with the name my-grafana
+#### Create a Grafana instance with the name my-grafana
 
 `oc apply -f Grafana/grafana.yaml`
 
@@ -90,6 +118,6 @@ https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-conta
 
 `oc serviceaccounts get-token grafana-serviceaccount -n my-grafana`
 
-### Replace BEARER_TOKEN in grafana-ds.yaml
+#### Replace BEARER_TOKEN in grafana-ds.yaml
 
 `oc apply -f Grafana/grafana-ds.yaml`
