@@ -48,12 +48,7 @@ Apply the YAML from the [argo](argo/) folder.
 
 ### Validate ArgoCD user interface
 
-- GUI login
-- networking
-- openshift-gitops ns
-- route, click and open in new window
-- confirm authorization
-- pvc's are spinning until pipeline is run
+Login to OpenShift console. Navigate to Networking -> Routes. Change Project to `openshift-gitops`, be sure to enable "Show default projects". Click the Location link for the `openshift-gitops-server` route. A new browser window appears. Confirm authorization. Confirm that "Applications" shows `dev-hello-world`, `hello-world-tekton`, and `prod-hello-world`.
 
 ## Set up demo pipelines
 
@@ -73,9 +68,19 @@ Get token from GitHub. Settings -> Developer Settings -> Personal access tokens 
 
 ### Add secret for access to quay
 
-`oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>`
+Replace <username> and <password> with values from quay.io. Note that `default` in `oc secrets link` command refers to the service account name.
 
-`oc secrets link pipeline quay-registry --for=pull,mount`
+```
+oc project hello-world
+oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
+oc secrets link default quay-registry --for=pull,mount
+```
+
+```
+oc project hello-world
+oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
+oc secrets link default quay-registry --for=pull,mount
+```
 
 ### Point Webhook at triggers
 
