@@ -1,4 +1,5 @@
-FROM openjdk:8-jre-alpine
+FROM registry.access.redhat.com/ubi8/openjdk-8-runtime:1.14
+#FROM openjdk:8-jre-alpine
 
 ENV APP_JAR_NAME hello-world
 
