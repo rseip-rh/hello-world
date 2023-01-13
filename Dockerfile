@@ -10,7 +10,7 @@ ADD target/*.jar ${APP_HOME}/${APP_JAR}
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 
 #RUN apk upgrade --update && apk add su-exec && \
-RUN dnf update && \ 
+RUN microdnf update && \ 
     sh -c 'touch ${APP_HOME}/${APP_JAR}' && \
     chmod a+x /docker-entrypoint.sh
 
