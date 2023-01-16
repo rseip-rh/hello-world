@@ -14,8 +14,6 @@ USER root
 COPY target/*.jar ${APP_HOME}/${APP_JAR}
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-#RUN apk upgrade --update && apk add su-exec && \
-# RUN microdnf update && \ 
 RUN sh -c 'touch ${APP_HOME}/${APP_JAR}' && \
     chmod a+x /docker-entrypoint.sh
 
