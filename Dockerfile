@@ -1,7 +1,7 @@
 #FROM registry1.dso.mil/ironbank/redhat/openjdk/openjdk8:1.8.0
 #FROM registry1.dso.mil/ironbank/redhat/openjdk/openjdk8-slim:1.8.0
-#FROM registry.access.redhat.com/ubi8/openjdk-8-runtime:1.14
-FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
+FROM registry.access.redhat.com/ubi8/openjdk-8-runtime:latest
+#FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
 #FROM openjdk:8-jre-alpine
 
 ENV APP_JAR_NAME hello-world
