@@ -8,8 +8,8 @@ ENV APP_JAR ${APP_JAR_NAME}.jar
 
 USER root
 
-ADD target/*.jar ${APP_HOME}/${APP_JAR}
-ADD docker-entrypoint.sh /docker-entrypoint.sh
+COPY target/*.jar ${APP_HOME}/${APP_JAR}
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 #RUN apk upgrade --update && apk add su-exec && \
 # RUN microdnf update && \ 
