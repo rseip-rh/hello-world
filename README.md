@@ -5,7 +5,7 @@ This app is for demoing OpenShift Pipelines
 ## Prerequisites
 
 This demonstration requires the following resources:
-- [OpenShift Container Platform 4.11.x](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it)
+- [OpenShift Container Platform 4.12.x](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it)
 - GitHub account with [hello-world](https://github.com/rseip-rh/hello-world) and [hello-world-deploy](https://github.com/rseip-rh/hello-world-deploy) projects
 - [quay.io](https://quay.io/user/rseip/) container registry account
 
@@ -43,8 +43,15 @@ oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitop
 
 Apply the YAML from the [argo](argo/) folder.
 
-`oc project hello-world`
-`oc apply -f argo/*`
+If repo is available locally:
+
+```
+oc apply -f argo/app-dev.yaml
+oc apply -f argo/app.yaml
+oc apply -f argo/tekton.yaml
+```
+
+Otherwise, copy each file contents and paste/import via the OpenShift console.
 
 ### Validate ArgoCD user interface
 
@@ -58,28 +65,34 @@ Make sure to run from inside namespace hello-world
 
 `oc project hello-world`
 
+If GitHub token has not yet been created:
+
 Get token from GitHub. Settings -> Developer Settings -> Personal access tokens -> Tokens (classic) -> Generate new token -> Generate new token (classic). Grant "repo" permissions. Take note of lifetime expiration.
 
-`oc create secret generic github --from-literal token="MY_TOKEN" `
+Proceed with creating the secret.
 
-`oc get secret github`
-
-`oc describe secret github`
+```
+oc create secret generic github --from-literal token="MY_TOKEN"
+oc get secret github
+oc describe secret github
+```
 
 ### Add secret for access to quay
 
-Replace <username> and <password> with values from quay.io. Note that `default` in `oc secrets link` command refers to the service account name.
+Replace <username> and <password> with values from quay.io. The password should be the encrypted CLI format.
 
 ```
 oc project hello-world
 oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
 oc secrets link default quay-registry --for=pull,mount
+oc secrets link pipeline quay-registry --for=pull,mount
 ```
 
 ```
-oc project hello-world
+oc project hello-world-dev
 oc create secret docker-registry quay-registry --docker-server=quay.io --docker-username=<username> --docker-password=<password>
 oc secrets link default quay-registry --for=pull,mount
+oc secrets link pipeline quay-registry --for=pull,mount
 ```
 
 ### Point Webhook at triggers
