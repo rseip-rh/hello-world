@@ -109,6 +109,28 @@ For `el-hello-world-app`, use the `HOST/PORT` value to create a push webhook. En
 For `el-hello-world-test-app`, use the `HOST/PORT` value to create a push webhook. Ensure payload URL is prefixed with `http://` and a trailing slash `/`. Change the content type to `application/json`. Enable ONLY pull request events.
 
 TODO - explore use of CLI to create these webhooks
+  
+### Use basic-auth credentials for git-cli task
+
+[https://hub.tekton.dev/tekton/task/git-cli](https://hub.tekton.dev/tekton/task/git-cli)
+
+Replace <user> and <pass> with your values.
+
+```
+kind: Secret
+apiVersion: v1
+metadata:
+  name: github-basic-auth-secret
+type: Opaque
+stringData:
+  .gitconfig: |
+    [credential "https://github.com"]
+      helper = store
+  .git-credentials: |
+    https://<user>:<pass>@github.com
+```
+
+Import via the OpenShift console.
 
 ### Allow pipeline service account to read the cluster api
 
