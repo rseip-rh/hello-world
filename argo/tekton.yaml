@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: hello-world-tekton
-  namespace: openshift-gitops
+  namespace: argocd
 spec:
   destination:
     namespace: hello-world
