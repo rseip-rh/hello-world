@@ -41,7 +41,7 @@ oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitop
 
 ### Add applications to ArgoCD
 
-Apply the YAML from the [argo](argo/) folder.
+Apply the YAML from the [argo](argo/) folder. Note that `namespace` value depends on which ArgoCD is being used (OpenShift GitOps Operator or Big Bang helm); modify as appropriate. For OpenShift GitOps Operator, the value is `openshift-gitops`. For Big Bang, the value is `argocd`.
 
 If repo is available locally:
 
@@ -55,7 +55,17 @@ Otherwise, copy each file contents and paste/import via the OpenShift console.
 
 ### Validate ArgoCD user interface
 
+#### OpenShift GitOps Operator
 Login to OpenShift console. Navigate to Networking -> Routes. Change Project to `openshift-gitops`, be sure to enable "Show default projects". Click the Location link for the `openshift-gitops-server` route. A new browser window appears. Confirm authorization. Confirm that "Applications" shows `dev-hello-world`, `hello-world-tekton`, and `prod-hello-world`.
+
+#### Big Bang ArgoCD Helm install
+Navigate to `argocd.bigbang.dev`. Login as `admin`. Default password can be found as:
+
+```
+oc -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+Confirm that "Applications" shows `dev-hello-world`, `hello-world-tekton`, and `prod-hello-world`.
 
 ## Set up demo pipelines
 
