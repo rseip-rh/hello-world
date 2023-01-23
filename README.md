@@ -114,7 +114,7 @@ TODO - explore use of CLI to create these webhooks
 
 [https://hub.tekton.dev/tekton/task/git-cli](https://hub.tekton.dev/tekton/task/git-cli)
 
-Replace <user> and <pass> with your values.
+Replace `<user>` and `<pass>` with your values.
 
 ```
 kind: Secret
