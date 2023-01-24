@@ -85,7 +85,7 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: el-hello-world-app
-  namespace: hello-world
+  namespace: hello-world-pipeline
 spec:
   to:
     kind: Service
