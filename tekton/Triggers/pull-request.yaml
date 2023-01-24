@@ -3,7 +3,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
   name: hello-world-test-app
-  namespace: hello-world
+  namespace: hello-world-pipeline
 spec:
   namespaceSelector: {}
   resources: {}
