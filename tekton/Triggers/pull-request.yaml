@@ -28,7 +28,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
   name: hello-world-test-app
-  namespace: hello-world
+  namespace: hello-world-pipeline
 spec:
   params:
     - description: The git repository url
