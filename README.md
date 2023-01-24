@@ -28,14 +28,15 @@ Refer to [Enabling monitoring for user-defined projects](https://docs.openshift.
 
 ## Setup and configure ArgoCD
 
-### Setup the namespace and give permissions to ArgoCD Service Account
+### Setup the namespaces and give permissions to ArgoCD Service Account
 
 ```
 oc create ns hello-world
-oc label namespace hello-world argocd.argoproj.io/managed-by=openshift-gitops
-oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n hello-world
 oc create ns hello-world-dev
-oc label namespace hello-world-dev argocd.argoproj.io/managed-by=openshift-gitops
+oc create ns hello-world-pipeline
+#oc label namespace hello-world argocd.argoproj.io/managed-by=openshift-gitops
+oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n hello-world
+#oc label namespace hello-world-dev argocd.argoproj.io/managed-by=openshift-gitops
 oc policy add-role-to-user monitoring-edit system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n hello-world-dev
 ```
 
@@ -71,9 +72,9 @@ Confirm that "Applications" shows `dev-hello-world`, `hello-world-tekton`, and `
 
 ### Setup Tekton Task github-set-status
 
-Make sure to run from inside namespace hello-world
+Make sure to run from inside namespace hello-world-pipeline
 
-`oc project hello-world`
+`oc project hello-world-pipeline`
 
 If GitHub token has not yet been created:
 
@@ -85,6 +86,26 @@ Proceed with creating the secret.
 oc create secret generic github --from-literal token="MY_TOKEN"
 oc get secret github
 oc describe secret github
+```
+
+### Use basic-auth credentials for git-cli task
+
+[https://hub.tekton.dev/tekton/task/git-cli](https://hub.tekton.dev/tekton/task/git-cli)
+
+Replace `<user>` and `<pass>` with your values.
+
+```
+kind: Secret
+apiVersion: v1
+metadata:
+  name: github-basic-auth-secret
+type: Opaque
+stringData:
+  .gitconfig: |
+    [credential "https://github.com"]
+      helper = store
+  .git-credentials: |
+    https://<user>:<pass>@github.com
 ```
 
 ### Add secret for access to quay
@@ -120,25 +141,7 @@ For `el-hello-world-test-app`, use the `HOST/PORT` value to create a push webhoo
 
 TODO - explore use of CLI to create these webhooks
   
-### Use basic-auth credentials for git-cli task
 
-[https://hub.tekton.dev/tekton/task/git-cli](https://hub.tekton.dev/tekton/task/git-cli)
-
-Replace `<user>` and `<pass>` with your values.
-
-```
-kind: Secret
-apiVersion: v1
-metadata:
-  name: github-basic-auth-secret
-type: Opaque
-stringData:
-  .gitconfig: |
-    [credential "https://github.com"]
-      helper = store
-  .git-credentials: |
-    https://<user>:<pass>@github.com
-```
 
 Import via the OpenShift console.
 
