@@ -2,7 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: hello-world-maven
-  namespace: hello-world
+  namespace: hello-world-pipeline
 spec:
   accessModes:
     - ReadWriteOnce
