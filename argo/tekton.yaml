@@ -17,7 +17,7 @@ spec:
     targetRevision: HEAD
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
     syncOptions:
       - ApplyOutOfSyncOnly=true
