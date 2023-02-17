@@ -66,7 +66,8 @@ spec:
           - name: maven-repo
             persistentVolumeClaim:
               claimName: hello-world-maven
-          - emptyDir: {}
+          - configmap:
+              name: maven-settings-cm
             name: maven-settings
 ---
 kind: Route
