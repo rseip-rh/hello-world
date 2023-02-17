@@ -89,7 +89,7 @@ spec:
         - name: GOALS
           value:
             - verify
-            - sonar:sonar
+            - sonar:sonar -Dsonar.host.url=sonarqube-sonarqube.sonarqube.svc.cluster.local
       runAfter:
         - maven-build
       taskRef:
