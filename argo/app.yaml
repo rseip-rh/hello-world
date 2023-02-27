@@ -3,6 +3,7 @@ kind: Application
 metadata:
   name: prod-hello-world
   namespace: argocd
+  istio-injection: enabled
 spec:
   destination:
     namespace: hello-world
