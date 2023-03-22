@@ -12,7 +12,7 @@ spec:
       jsonnet: {}
       recurse: true
     path: tekton
-    repoURL: 'https://gitlab.mays-demo.com/red-hat/hello-world.git'
+    repoURL: 'https://gitlab.demo.rseip.dev/redhat/hello-world.git'
     targetRevision: HEAD
   syncPolicy:
     automated:
