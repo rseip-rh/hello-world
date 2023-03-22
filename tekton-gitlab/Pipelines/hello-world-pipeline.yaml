@@ -19,7 +19,7 @@ spec:
     - default: master
       name: GIT_REVISION
       type: string
-    - default: 'quay.io/cmays20/hello-world'
+    - default: 'quay.io/rseip/hello-world'
       name: IMAGE_NAME
       type: string
     - default: .
