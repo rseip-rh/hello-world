@@ -8,10 +8,10 @@ metadata:
   name: promote-dev-to-prod
 spec:
   params:
-    - default: 'harbor.mays-demo.com/redhat/hello-world'
+    - default: 'harbor.demo.rseip.dev/redhat/hello-world'
       name: IMAGE_NAME
       type: string
-    - default: 'https://gitlab.mays-demo.com/red-hat/hello-world-deploy'
+    - default: 'https://gitlab.demo.rseip.dev/redhat/hello-world-deploy'
       name: MANIFEST_GIT_REPO
       type: string
     - name: PREVIOUS_WORKING_DIR
@@ -66,9 +66,9 @@ spec:
     - name: git-commit
       params:
         - name: GIT_USER_NAME
-          value: 'cmays20'
+          value: 'rseip'
         - name: GIT_USER_EMAIL
-          value: 'cmays@outlook.com'
+          value: 'rseip@redhat.com'
         - name: GIT_SCRIPT
           value: |
             git add $(params.MANIFEST_WORKING_DIR)/kustomization.yaml
