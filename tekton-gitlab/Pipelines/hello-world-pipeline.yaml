@@ -13,7 +13,7 @@ spec:
     - default: hello-world
       name: APP_NAME
       type: string
-    - default: 'https://github.com/cmays20/hello-world'
+    - default: 'https://gitlab.demo.rseip.dev/redhat/hello-world'
       name: GIT_REPO
       type: string
     - default: master
@@ -31,17 +31,17 @@ spec:
     - default: 'maven:3-openjdk-11-slim'
       name: MAVEN_IMAGE
       type: string
-    - default: 'https://github.com/cmays20/hello-world-deploy'
+    - default: 'https://gitlab.demo.rseip.dev/redhat/hello-world-deploy'
       name: MANIFEST_GIT_REPO
       type: string
     - name: MANIFEST_WORKING_DIR
       type: string
     - name: GIT_USER
       type: string
-      default: 'cmays20'
+      default: 'rseip'
     - name: GIT_USER_EMAIL
       type: string
-      default: 'cmays@outlook.com'
+      default: 'rseip@redhat.com'
   tasks:
     - name: fetch-repository
       params:
