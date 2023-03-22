@@ -51,7 +51,7 @@ spec:
             value: $(tt.params.git-revision)
           - name: IMAGE_NAME
             value: >-
-              harbor.mays-demo.com/redhat/$(tt.params.git-repo-name)
+              harbor.demo.rseip.dev/redhat/$(tt.params.git-repo-name)
           - name: PATH_CONTEXT
             value: .
           - name: VERSION
@@ -61,9 +61,9 @@ spec:
           - name: MANIFEST_WORKING_DIR
             value: environments/dev
           - name: MANIFEST_GIT_REPO
-            value: https://gitlab.mays-demo.com/red-hat/hello-world-deploy.git
+            value: https://gitlab.demo.rseip.dev/redhat/hello-world-deploy.git
           - name: GIT_USER
-            value: cmays
+            value: rseip
         pipelineRef:
           name: hello-world
         timeout: 1h0m0s
