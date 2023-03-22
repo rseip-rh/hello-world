@@ -5,7 +5,7 @@ metadata:
   namespace: hello-world
 spec:
   params:
-    - default: 'https://github.com/cmays20/hello-world'
+    - default: 'https://github.com/rseip-rh/hello-world'
       name: GIT_REPO
       type: string
     - default: master
