@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: hello-world
-          image: quay.io/cmays20/hello-world:latest
+          image: quay.io/rseip/hello-world:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
