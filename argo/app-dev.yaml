@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: environments/dev
-    repoURL: 'https://gitlab.mays-demo.com/red-hat/hello-world-deploy.git'
+    repoURL: 'https://gitlab.demo.rseip.dev/redhat/hello-world-deploy.git'
     targetRevision: HEAD
   syncPolicy:
     automated:
