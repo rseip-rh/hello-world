@@ -55,7 +55,7 @@ spec:
           - name: SHA
             value: $(tt.params.mergereq-sha)
           - name: GITLAB_HOST_URL
-            value: 'gitlab.mays-demo.com'
+            value: 'gitlab.demo.rseip.dev'
         pipelineRef:
           name: hello-world-test
         timeout: 1h0m0s
